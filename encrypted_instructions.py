@@ -1,4 +1,12 @@
+# ID: 143844203
+
 from typing import List, Tuple
+
+# Константы
+DIGITS: str = "0123456789"
+DECIMAL_BASE: int = 10
+OPEN_BRACKET: str = "["
+CLOSE_BRACKET: str = "]"
 
 CharBuffer = List[str]
 StackFrame = Tuple[CharBuffer, int]
@@ -18,13 +26,13 @@ def decode_instructions(encoded: str) -> str:
     current_repeat: int = 0  # Множитель перед следующей '['
 
     for char in encoded:
-        if char.isdigit():
-            current_repeat = current_repeat * 10 + int(char)  # Сдвиг на разряд
-        elif char == "[":
+        if char in DIGITS:
+            current_repeat = current_repeat * DECIMAL_BASE + int(char)  # Сдвиг
+        elif char == OPEN_BRACKET:
             context_stack.append((current_chars, current_repeat))
             current_chars = []
             current_repeat = 0
-        elif char == "]":
+        elif char == CLOSE_BRACKET:
             prefix_chars, repeat = context_stack.pop()
             current_chars = prefix_chars + current_chars * repeat
             # current_chars * repeat — повторяет список
